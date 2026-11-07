@@ -1,0 +1,34 @@
+# Бот + отдельный Chrome с CDP.
+# Перед первым запуском: cp .env.example .env и заполнить.
+services:
+  chrome:
+    image: zenika/alpine-chrome:latest
+    command:
+      - --no-sandbox
+      - --disable-dev-shm-usage
+      - --remote-debugging-address=0.0.0.0
+      - --remote-debugging-port=9222
+      - --user-data-dir=/home/chrome/chromedata
+      - --window-size=1366,768
+    ports:
+      - "9222:9222"
+    volumes:
+      - chrome-data:/home/chrome/chromedata
+    restart: unless-stopped
+
+  bot:
+    build: .
+    env_file:
+      - .env
+    environment:
+      CHROME_ENDPOINT: http://chrome:9222
+      DB_PATH: /app/data/bot.db
+    depends_on:
+      - chrome
+    volumes:
+      - bot-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  chrome-data:
+  bot-data:

@@ -1,0 +1,25 @@
+{
+  "name": "ttcomm-telegram",
+  "version": "3.0.0",
+  "private": true,
+  "description": "TikTok-бот с полным управлением через Telegram (Puppeteer + OpenAI, без веб-панели)",
+  "main": "src/index.js",
+  "engines": {
+    "node": ">=22.16"
+  },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning src/index.js",
+    "dev": "node --watch --disable-warning=ExperimentalWarning src/index.js",
+    "test": "node --test"
+  },
+  "keywords": [
+    "tiktok",
+    "telegram-bot",
+    "puppeteer",
+    "automation"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer-core": "^25.16.0"
+  }
+}
