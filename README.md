@@ -1,5 +1,7 @@
 # ttcomm — TikTok-бот с управлением из Telegram
 
+[![CI](https://github.com/getene761-cell/ttcomm-telegram/actions/workflows/ci.yml/badge.svg)](https://github.com/getene761-cell/ttcomm-telegram/actions/workflows/ci.yml)
+
 Переработанная версия [ainastrahnet/ttcomm](https://github.com/ainastrahnet/ttcomm): та же автоматизация TikTok
 (поиск → анализ видео → комментарий), но **всё управление вынесено в Telegram-бота**.
 Веб-панель, Express и `public/index.html` удалены — единственный интерфейс это чат с ботом.
