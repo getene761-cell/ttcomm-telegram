@@ -73,14 +73,14 @@ class Database {
   }
 
   /**
-   * SQLite lower() не умеет кириллицу, поэтому нормализуем текст в JS
+   * Миграции для баз, созданных старой версией (web-панель).
+   * SQLite lower() не умеет кириллицу, поэтому текст нормализуем в JS
    * и храним отдельной колонкой (нужно для поиска дублей).
    */
   migrate() {
-    const columns = this.db.prepare('PRAGMA table_info(comments)').all().map((column) => column.name);
-    if (!columns.includes('normalized_text')) {
-      this.db.exec('ALTER TABLE comments ADD COLUMN normalized_text TEXT');
-    }
+    this.#ensureColumn('comments', 'normalized_text', 'TEXT');
+    this.#ensureColumn('sessions', 'mode', 'TEXT');
+    this.#ensureColumn('sessions', 'query', 'TEXT');
 
     const stale = this.db
       .prepare('SELECT id, comment_text FROM comments WHERE normalized_text IS NULL')
@@ -91,6 +91,13 @@ class Database {
     }
 
     this.db.exec('CREATE INDEX IF NOT EXISTS idx_comments_normalized ON comments(normalized_text)');
+  }
+
+  #ensureColumn(table, column, definition) {
+    const columns = this.db.prepare(`PRAGMA table_info(${table})`).all().map((row) => row.name);
+    if (!columns.includes(column)) {
+      this.db.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`);
+    }
   }
 
   /* ----------------------------- videos ----------------------------- */
